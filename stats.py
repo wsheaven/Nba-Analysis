@@ -2,26 +2,35 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt 
 
-# Question: is there a correlation between player height and 
-# points averaged. 
-# To answer this question we will take the average points 
-# per season based on the players height and compare. 
+# Read in the dataset
 
 all_seasons = pd.read_csv('all_seasons.csv') 
+
+# Convert the player heights from cm to inches 
+# and the weights from kilograms to pounds.
 
 all_seasons.player_height = all_seasons.player_height * 0.393
 
 all_seasons.player_weight = all_seasons.player_weight * 2.2046
 
+# Question: is there a correlation between player height and 
+# points averaged. 
+# To answer this question we will take the average points 
+# per season based on the players height and compare. 
+
+# Round the heights drop all rows where the player averaged less than 3 points a game 
+
 all_seasons = all_seasons.round({"player_height":0})
+
+all_season_height = all_seasons[all_seasons.pts > 3]
 
 
 # Give us the tallest player and the shortest player. 
-# smallest = all_seasons["player_height"].min(skipna = False)
-# print(smallest)
+# shortest = all_seasons["player_height"].min(skipna = False)
+# print(shortest)
 # tallest = all_seasons["player_height"].max(skipna = False)
 # print(tallest)
-# Shortest = 160, tallest = 231
+# Shortest = 63, tallest = 91
 
 # Create a new empty Dataframe 
 height = pd.DataFrame({'Height':[], 'Points':[]})
@@ -29,9 +38,9 @@ height = pd.DataFrame({'Height':[], 'Points':[]})
 # Loop through the possible heights and find the mean points for 
 # each height than add the data to the dataframe. 
 # Use a try block incase there are no players at the tested height. 
-for i in range(0,232):
+for i in range(62,92):
     try:
-        grouped = all_seasons.groupby(all_seasons.player_height)
+        grouped = all_season_height.groupby(all_season_height.player_height)
         set_height = grouped.get_group(i)
         points_avg = set_height['pts'].mean()
 
@@ -41,7 +50,7 @@ for i in range(0,232):
          
     except:
         pass
-        
+
 # Plot the dataframe and display it. 
 chart = height.plot(y = 'Points', x = 'Height', kind = 'scatter')
 chart.set_xlabel('Height (Inches)')
@@ -69,7 +78,7 @@ weight = pd.DataFrame({'Weight':[], 'Average games per season':[]})
 # Loop through the possible weights and find the mean points for 
 # each weight than add the data to the dataframe. 
 # Use a try block incase there are no players at the tested weight. 
-for i in range(100,450):
+for i in range(100,450,5):
     try:
         grouped = all_seasons.groupby(all_seasons.player_weight)
         set_weight = grouped.get_group(i)
@@ -83,11 +92,14 @@ for i in range(100,450):
         pass
 
 
+
 # Plot the dataframe and display it. 
-chart = weight.plot(y = 'Average games per season', x = 'Weight', kind = 'line')
-chart.set_xlabel('Weight (lbs)')
+chart2 = weight.plot(y = 'Average games per season', x = 'Weight', kind = 'line')
+chart2.set_xlabel('Weight (lbs)')
 plt.show()
+
 
 # There seems to be a semi strong corelation between weight 
 # and games played. It seems to be that having a low or a high 
 # impact on a players durability. 
+
