@@ -1,5 +1,5 @@
 import pandas as pd 
-import numpy as np
+#import numpy as np
 import matplotlib.pyplot as plt 
 
 # Read in the dataset
@@ -44,9 +44,9 @@ for i in range(62,92):
         set_height = grouped.get_group(i)
         points_avg = set_height['pts'].mean()
 
-        fish = pd.DataFrame({'Height':[i], 'Points':[points_avg]})
+        height_points = pd.DataFrame({'Height':[i], 'Points':[points_avg]})
 
-        height = pd.concat([height, fish])
+        height = pd.concat([height, height_points])
          
     except:
         pass
@@ -84,9 +84,9 @@ for i in range(100,450,5):
         set_weight = grouped.get_group(i)
         games_avg = set_weight['gp'].mean()
 
-        fish = pd.DataFrame({'Weight':[i], 'Average games per season':[games_avg]})
+        weight_games = pd.DataFrame({'Weight':[i], 'Average games per season':[games_avg]})
 
-        weight = pd.concat([weight, fish])
+        weight = pd.concat([weight, weight_games])
          
     except:
         pass
